@@ -1,0 +1,68 @@
+/* Fieldset externo (tabela) */
+.tabela-externa {
+    border: 2px solid #000;       
+    width: 95%;                   
+    max-width: 1200px;            
+    padding: 15px;                /* menos padding para aproximar as bordas do conteúdo */
+    margin: 20px auto;            
+    box-sizing: border-box;
+    background-color: #F5F5F5;
+    font-family: "Times New Roman", Times, serif;  
+}
+
+/* Legend (título) flutuando sobre a borda */
+.tabela-externa legend {
+    padding: 0 10px;              
+    font-weight: bold;
+    font-size: 1.3em;             
+}
+
+/* Cada grupo de campos */
+.grupo {
+    padding: 10px;                 /* reduzir padding para aproximar borda do texto */
+    margin: 8px 0;                 
+    border-radius: 5px;
+}
+
+/* Fundo azul */
+.grupo-azul {
+    background-color: hwb(211 5% 17%);
+}
+
+/* Fundo cinza */
+.grupo-cinza {
+    background-color: hsl(0, 2%, 47%);
+}
+
+/* Lista sem pontinhos */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Itens do formulário */
+li {
+    margin-bottom: 8px;            /* reduz espaço entre linhas */
+}
+
+/* Labels em negrito e maior */
+label {
+    display: inline-block;
+    width: auto;                   /* permite que o input fique logo após o texto */
+    min-width: 100px;              /* ainda mantém alinhamento mínimo */
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #000;
+    margin-right: 5px;             /* pequeno espaço entre label e input */
+    vertical-align: middle;        /* alinhamento melhor com o input */
+}
+
+/* Inputs e selects com fonte maior e negrito */
+input, select {
+    padding: 4px 6px;              /* menos padding para ficar mais compacto */
+    font-size: 1.05em;
+    font-weight: bold;
+    
+
+}
