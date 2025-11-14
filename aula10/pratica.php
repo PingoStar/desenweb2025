@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
-</head>   
+    <title>Login</title>
+</head>
 <body>
-    <form action="pratica1_login.php" method="post">
-        <fieldset>
-            <label>Usuario: </label>
-            <input type="text" name="usuario">
-        </fieldset>
-        <fieldset>
-            <label>Senha: </label>
-            <input type="password" name="senha">
-        </fieldset>
-        <fieldset>
-            <input type="submit" value="Login">
-        </fieldset>
-    </form>
+
+<h2>Login</h2>
+
+<form action="02_session_init.php" method="POST">
+    <label>Login:</label><br>
+    <input type="text" name="campo_login" required><br><br>
+
+    <label>Senha:</label><br>
+    <input type="password" name="campo_senha" required><br><br>
+
+    <button type="submit">Entrar</button>
+</form>
+
 </body>
 </html>
