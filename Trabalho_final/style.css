@@ -1,0 +1,116 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f3f6f9;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+h1 {
+  text-align: center;
+  color: #007bff;
+}
+
+p {
+  text-align: center;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.pergunta {
+  text-align: center;
+}
+
+h3 {
+  margin-bottom: 15px;
+}
+
+.escala {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.botao-nota {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+.botao-nota:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+/* Cores da escala (0 = vermelho, 10 = verde) com degradê suave */
+[data-valor="0"]  { background: linear-gradient(135deg, #ff0000, #cc0000); }
+[data-valor="1"]  { background: linear-gradient(135deg, #ff2a00, #d12a00); }
+[data-valor="2"]  { background: linear-gradient(135deg, #ff5500, #d13a00); }
+
+[data-valor="3"]  { background: linear-gradient(135deg, #ff8000, #d16b00); }
+[data-valor="4"]  { background: linear-gradient(135deg, #ffa500, #d18400); }
+
+[data-valor="5"]  { background: linear-gradient(135deg, #ffd000, #d1a000); color: #333; }
+[data-valor="6"]  { background: linear-gradient(135deg, #fff200, #d1c000); color: #333; }
+
+[data-valor="7"]  { background: linear-gradient(135deg, #b4e000, #8cc400); }
+[data-valor="8"]  { background: linear-gradient(135deg, #6edc00, #4caf00); }
+[data-valor="9"]  { background: linear-gradient(135deg, #33c600, #289c00); }
+[data-valor="10"] { background: linear-gradient(135deg, #00b300, #008f00); }
+
+.botao-nota.selecionado {
+  border: 3px solid #000;
+  transform: scale(1.1);
+}
+
+textarea {
+  width: 90%;
+  height: 80px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+}
+
+button {
+  margin-top: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#mensagem {
+  text-align: center;
+  color: green;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.oculto {
+  display: none;
+}
