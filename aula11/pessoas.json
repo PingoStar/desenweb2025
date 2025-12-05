@@ -1,0 +1,42 @@
+[
+    {
+        "nome": "Anderson Luis",
+        "sobrenome": "Santos Moreira",
+        "email": "andersonmoreirarsl@gmail.com",
+        "senha": "22222222",
+        "cidade": "Rio do Sul",
+        "estado": "SC"
+    },
+    {
+        "nome": "Anderson Luis",
+        "sobrenome": "Santos Moreira",
+        "email": "andersonmoreirarsl@gmail.com",
+        "senha": "222222",
+        "cidade": "Rio do Sul",
+        "estado": "SC"
+    },
+    {
+        "nome": "Camila",
+        "sobrenome": "Andrade",
+        "email": "camila@gmail.com",
+        "senha": "133344444",
+        "cidade": "Agrolandia",
+        "estado": "SC"
+    },
+    {
+        "nome": "Amanda ",
+        "sobrenome": "Leticia",
+        "email": "amanda@gmail.com",
+        "senha": "44444444",
+        "cidade": "Petrolandia",
+        "estado": "SC"
+    },
+    {
+        "nome": "Karine ",
+        "sobrenome": "Julio",
+        "email": "karine@gmail.com",
+        "senha": "2425453466",
+        "cidade": "Taio",
+        "estado": "SC"
+    }
+]

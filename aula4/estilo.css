@@ -1,0 +1,68 @@
+
+.tabela-externa {
+    border: 2px solid #000;       
+    width: 95%;                   
+    max-width: 1200px;            
+    padding: 15px;               
+    margin: 20px auto;            
+    box-sizing: border-box;
+    background-color: #F5F5F5;
+    font-family: "Times New Roman", Times, serif;  
+}
+
+
+.tabela-externa legend {
+    padding: 0 10px;              
+    font-weight: bold;
+    font-size: 1.3em;             
+}
+
+
+.grupo {
+    padding: 10px;                
+    margin: 8px 0;                 
+    border-radius: 5px;
+}
+
+
+.grupo-azul {
+    background-color: hwb(211 5% 17%);
+}
+
+
+.grupo-cinza {
+    background-color: hsl(0, 2%, 47%);
+}
+
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+li {
+    margin-bottom: 8px;            
+}
+
+
+label {
+    display: inline-block;
+    width: auto;                   
+    min-width: 100px;              
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #000;
+    margin-right: 5px;             
+    vertical-align: middle;       
+}
+
+
+input, select {
+    padding: 4px 6px;             
+    font-size: 1.05em;
+    font-weight: bold;
+    
+
+}

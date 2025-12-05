@@ -38,6 +38,3 @@ if($feedbackIndex !== null && $feedbackIndex !== count($perguntas)-1){
 header('Content-Type: application/json');
 echo json_encode($perguntas);
 ?>
-
-
-
