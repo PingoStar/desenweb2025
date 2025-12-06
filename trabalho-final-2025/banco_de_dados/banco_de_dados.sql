@@ -1,0 +1,869 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.5
+-- Dumped by pg_dump version 17.5
+
+-- Started on 2025-12-06 00:57:27
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 57757)
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- TOC entry 4951 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 225 (class 1259 OID 57882)
+-- Name: avaliacoes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.avaliacoes (
+    id integer NOT NULL,
+    id_pergunta integer,
+    resposta integer,
+    feedback text,
+    data_hora timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    created_at timestamp without time zone DEFAULT now(),
+    CONSTRAINT avaliacoes_resposta_check CHECK (((resposta >= 0) AND (resposta <= 10)))
+);
+
+
+ALTER TABLE public.avaliacoes OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 57881)
+-- Name: avaliacoes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.avaliacoes_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.avaliacoes_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4952 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: avaliacoes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.avaliacoes_id_seq OWNED BY public.avaliacoes.id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 57860)
+-- Name: departamentos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.departamentos (
+    id integer NOT NULL,
+    nome character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.departamentos OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 57859)
+-- Name: departamentos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.departamentos_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.departamentos_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4953 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: departamentos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.departamentos_id_seq OWNED BY public.departamentos.id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 57718)
+-- Name: dispositivos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.dispositivos (
+    id integer NOT NULL,
+    nome character varying(100) NOT NULL,
+    status boolean DEFAULT true
+);
+
+
+ALTER TABLE public.dispositivos OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 57717)
+-- Name: dispositivos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.dispositivos_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.dispositivos_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4954 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: dispositivos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.dispositivos_id_seq OWNED BY public.dispositivos.id;
+
+
+--
+-- TOC entry 223 (class 1259 OID 57867)
+-- Name: perguntas; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.perguntas (
+    id integer NOT NULL,
+    id_departamento integer,
+    texto text NOT NULL,
+    status boolean DEFAULT true
+);
+
+
+ALTER TABLE public.perguntas OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 57866)
+-- Name: perguntas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.perguntas_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.perguntas_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4955 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: perguntas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.perguntas_id_seq OWNED BY public.perguntas.id;
+
+
+--
+-- TOC entry 227 (class 1259 OID 57898)
+-- Name: usuarios_admin; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.usuarios_admin (
+    id integer NOT NULL,
+    usuario character varying(50) NOT NULL,
+    senha_hash text NOT NULL
+);
+
+
+ALTER TABLE public.usuarios_admin OWNER TO postgres;
+
+--
+-- TOC entry 226 (class 1259 OID 57897)
+-- Name: usuarios_admin_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.usuarios_admin_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.usuarios_admin_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4956 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: usuarios_admin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.usuarios_admin_id_seq OWNED BY public.usuarios_admin.id;
+
+
+--
+-- TOC entry 228 (class 1259 OID 57916)
+-- Name: vw_avaliacoes_departamento; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_avaliacoes_departamento AS
+ SELECT d.nome AS departamento,
+    p.texto AS pergunta,
+    a.resposta AS nota,
+    a.feedback,
+    a.data_hora
+   FROM ((public.avaliacoes a
+     JOIN public.perguntas p ON ((p.id = a.id_pergunta)))
+     JOIN public.departamentos d ON ((d.id = p.id_departamento)));
+
+
+ALTER VIEW public.vw_avaliacoes_departamento OWNER TO postgres;
+
+--
+-- TOC entry 230 (class 1259 OID 57924)
+-- Name: vw_feedbacks_departamento; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_feedbacks_departamento AS
+ SELECT d.nome AS departamento,
+    p.texto AS pergunta,
+    a.feedback,
+    a.data_hora
+   FROM ((public.avaliacoes a
+     JOIN public.perguntas p ON ((p.id = a.id_pergunta)))
+     JOIN public.departamentos d ON ((d.id = p.id_departamento)))
+  WHERE ((a.feedback IS NOT NULL) AND (TRIM(BOTH FROM a.feedback) <> ''::text));
+
+
+ALTER VIEW public.vw_feedbacks_departamento OWNER TO postgres;
+
+--
+-- TOC entry 229 (class 1259 OID 57920)
+-- Name: vw_media_departamentos; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_media_departamentos AS
+ SELECT d.nome AS departamento,
+    avg(a.resposta) AS media
+   FROM ((public.avaliacoes a
+     JOIN public.perguntas p ON ((p.id = a.id_pergunta)))
+     JOIN public.departamentos d ON ((d.id = p.id_departamento)))
+  GROUP BY d.nome
+  ORDER BY d.nome;
+
+
+ALTER VIEW public.vw_media_departamentos OWNER TO postgres;
+
+--
+-- TOC entry 4769 (class 2604 OID 57885)
+-- Name: avaliacoes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.avaliacoes ALTER COLUMN id SET DEFAULT nextval('public.avaliacoes_id_seq'::regclass);
+
+
+--
+-- TOC entry 4766 (class 2604 OID 57863)
+-- Name: departamentos id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.departamentos ALTER COLUMN id SET DEFAULT nextval('public.departamentos_id_seq'::regclass);
+
+
+--
+-- TOC entry 4764 (class 2604 OID 57721)
+-- Name: dispositivos id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.dispositivos ALTER COLUMN id SET DEFAULT nextval('public.dispositivos_id_seq'::regclass);
+
+
+--
+-- TOC entry 4767 (class 2604 OID 57870)
+-- Name: perguntas id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.perguntas ALTER COLUMN id SET DEFAULT nextval('public.perguntas_id_seq'::regclass);
+
+
+--
+-- TOC entry 4772 (class 2604 OID 57901)
+-- Name: usuarios_admin id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.usuarios_admin ALTER COLUMN id SET DEFAULT nextval('public.usuarios_admin_id_seq'::regclass);
+
+
+--
+-- TOC entry 4943 (class 0 OID 57882)
+-- Dependencies: 225
+-- Data for Name: avaliacoes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.avaliacoes (id, id_pergunta, resposta, feedback, data_hora, created_at) FROM stdin;
+1	252	9	\N	2025-11-30 01:01:52.27957	2025-11-30 01:01:52.27957
+2	253	9	\N	2025-11-30 01:01:52.27957	2025-11-30 01:01:52.27957
+3	254	10	\N	2025-11-30 01:01:52.27957	2025-11-30 01:01:52.27957
+4	255	7	\N	2025-11-30 01:01:52.27957	2025-11-30 01:01:52.27957
+5	274	\N	Poderia ter camisa de mais clubes.	2025-11-30 01:01:52.27957	2025-11-30 01:01:52.27957
+6	252	9	\N	2025-12-05 13:29:22.680341	2025-12-05 13:29:22.680341
+7	253	9	\N	2025-12-05 13:29:22.680341	2025-12-05 13:29:22.680341
+8	254	10	\N	2025-12-05 13:29:22.680341	2025-12-05 13:29:22.680341
+9	255	7	\N	2025-12-05 13:29:22.680341	2025-12-05 13:29:22.680341
+10	274	\N	Poderia ter mais opções de vestuário	2025-12-05 13:29:22.680341	2025-12-05 13:29:22.680341
+11	247	7	\N	2025-12-05 13:30:18.266839	2025-12-05 13:30:18.266839
+12	248	8	\N	2025-12-05 13:30:18.266839	2025-12-05 13:30:18.266839
+13	249	7	\N	2025-12-05 13:30:18.266839	2025-12-05 13:30:18.266839
+14	250	6	\N	2025-12-05 13:30:18.266839	2025-12-05 13:30:18.266839
+15	273	\N	Poucas marcas. Poderia ter mais marcas disponíveis.	2025-12-05 13:30:18.266839	2025-12-05 13:30:18.266839
+16	252	8	\N	2025-12-05 13:30:38.346935	2025-12-05 13:30:38.346935
+17	253	8	\N	2025-12-05 13:30:38.346935	2025-12-05 13:30:38.346935
+18	254	8	\N	2025-12-05 13:30:38.346935	2025-12-05 13:30:38.346935
+19	255	7	\N	2025-12-05 13:30:38.346935	2025-12-05 13:30:38.346935
+20	274	\N	Gostei do atendimento e do ambiente.	2025-12-05 13:30:38.346935	2025-12-05 13:30:38.346935
+21	262	8	\N	2025-12-05 13:31:27.343692	2025-12-05 13:31:27.343692
+22	263	8	\N	2025-12-05 13:31:27.343692	2025-12-05 13:31:27.343692
+23	264	8	\N	2025-12-05 13:31:27.343692	2025-12-05 13:31:27.343692
+24	265	6	\N	2025-12-05 13:31:27.343692	2025-12-05 13:31:27.343692
+25	276	\N	Achei um pouco caro os produtos.	2025-12-05 13:31:27.343692	2025-12-05 13:31:27.343692
+26	257	8	\N	2025-12-05 13:32:07.958925	2025-12-05 13:32:07.958925
+27	258	9	\N	2025-12-05 13:32:07.958925	2025-12-05 13:32:07.958925
+28	259	9	\N	2025-12-05 13:32:07.958925	2025-12-05 13:32:07.958925
+29	260	7	\N	2025-12-05 13:32:07.958925	2025-12-05 13:32:07.958925
+30	275	\N	Poderia ter mais variedades de bermudas de compressão.	2025-12-05 13:32:07.958925	2025-12-05 13:32:07.958925
+31	242	7	\N	2025-12-05 13:32:44.516328	2025-12-05 13:32:44.516328
+32	243	7	\N	2025-12-05 13:32:44.516328	2025-12-05 13:32:44.516328
+33	244	7	\N	2025-12-05 13:32:44.516328	2025-12-05 13:32:44.516328
+34	245	6	\N	2025-12-05 13:32:44.516328	2025-12-05 13:32:44.516328
+35	272	\N	Poderia ter mais opções de cores nos produtos.	2025-12-05 13:32:44.516328	2025-12-05 13:32:44.516328
+36	257	9	\N	2025-12-05 13:33:04.597109	2025-12-05 13:33:04.597109
+37	258	10	\N	2025-12-05 13:33:04.597109	2025-12-05 13:33:04.597109
+38	259	10	\N	2025-12-05 13:33:04.597109	2025-12-05 13:33:04.597109
+39	260	8	\N	2025-12-05 13:33:04.597109	2025-12-05 13:33:04.597109
+40	275	\N	Gostei muito do atendimento e do ambiente.	2025-12-05 13:33:04.597109	2025-12-05 13:33:04.597109
+41	247	7	\N	2025-12-05 16:58:36.994386	2025-12-05 16:58:36.994386
+42	248	6	\N	2025-12-05 16:58:36.994386	2025-12-05 16:58:36.994386
+43	249	7	\N	2025-12-05 16:58:36.994386	2025-12-05 16:58:36.994386
+44	250	6	\N	2025-12-05 16:58:36.994386	2025-12-05 16:58:36.994386
+45	273	\N	o espaço poderia ser maior	2025-12-05 16:58:36.994386	2025-12-05 16:58:36.994386
+46	242	7	\N	2025-12-05 16:59:20.757816	2025-12-05 16:59:20.757816
+47	243	8	\N	2025-12-05 16:59:20.757816	2025-12-05 16:59:20.757816
+48	244	8	\N	2025-12-05 16:59:20.757816	2025-12-05 16:59:20.757816
+49	245	7	\N	2025-12-05 16:59:20.757816	2025-12-05 16:59:20.757816
+50	272	\N	poderia ter mais opções de roupas.	2025-12-05 16:59:20.757816	2025-12-05 16:59:20.757816
+51	257	9	\N	2025-12-05 17:30:24.995288	2025-12-05 17:30:24.995288
+52	258	10	\N	2025-12-05 17:30:24.995288	2025-12-05 17:30:24.995288
+53	259	10	\N	2025-12-05 17:30:24.995288	2025-12-05 17:30:24.995288
+54	260	8	\N	2025-12-05 17:30:24.995288	2025-12-05 17:30:24.995288
+55	275	\N	Gostei do ambiente\n	2025-12-05 17:30:24.995288	2025-12-05 17:30:24.995288
+84	257	7	\N	2025-12-05 18:27:24.386156	2025-12-05 18:27:24.386156
+85	258	8	\N	2025-12-05 18:27:24.386156	2025-12-05 18:27:24.386156
+86	259	9	\N	2025-12-05 18:27:24.386156	2025-12-05 18:27:24.386156
+87	260	7	\N	2025-12-05 18:27:24.386156	2025-12-05 18:27:24.386156
+88	275	\N	muito bom	2025-12-05 18:27:24.386156	2025-12-05 18:27:24.386156
+89	252	9	\N	2025-12-05 18:27:41.030608	2025-12-05 18:27:41.030608
+90	253	7	\N	2025-12-05 18:27:41.030608	2025-12-05 18:27:41.030608
+91	254	9	\N	2025-12-05 18:27:41.030608	2025-12-05 18:27:41.030608
+92	255	6	\N	2025-12-05 18:27:41.030608	2025-12-05 18:27:41.030608
+93	274	\N	poderia ter mais opções de camisas	2025-12-05 18:27:41.030608	2025-12-05 18:27:41.030608
+94	242	7	\N	2025-12-05 18:30:29.658229	2025-12-05 18:30:29.658229
+95	243	7	\N	2025-12-05 18:30:29.658229	2025-12-05 18:30:29.658229
+96	244	7	\N	2025-12-05 18:30:29.658229	2025-12-05 18:30:29.658229
+97	245	7	\N	2025-12-05 18:30:29.658229	2025-12-05 18:30:29.658229
+98	272	\N	bom	2025-12-05 18:30:29.658229	2025-12-05 18:30:29.658229
+99	252	7	\N	2025-12-05 18:43:43.732515	2025-12-05 18:43:43.732515
+100	253	8	\N	2025-12-05 18:43:43.732515	2025-12-05 18:43:43.732515
+101	254	8	\N	2025-12-05 18:43:43.732515	2025-12-05 18:43:43.732515
+102	255	7	\N	2025-12-05 18:43:43.732515	2025-12-05 18:43:43.732515
+103	274	\N	muito bom	2025-12-05 18:43:43.732515	2025-12-05 18:43:43.732515
+104	247	6	\N	2025-12-05 18:50:14.396408	2025-12-05 18:50:14.396408
+105	248	8	\N	2025-12-05 18:50:14.396408	2025-12-05 18:50:14.396408
+106	249	7	\N	2025-12-05 18:50:14.396408	2025-12-05 18:50:14.396408
+107	250	6	\N	2025-12-05 18:50:14.396408	2025-12-05 18:50:14.396408
+108	273	\N	não encontrei muitas opções	2025-12-05 18:50:14.396408	2025-12-05 18:50:14.396408
+109	242	8	\N	2025-12-05 18:50:26.205582	2025-12-05 18:50:26.205582
+110	243	9	\N	2025-12-05 18:50:26.205582	2025-12-05 18:50:26.205582
+111	244	8	\N	2025-12-05 18:50:26.205582	2025-12-05 18:50:26.205582
+112	245	8	\N	2025-12-05 18:50:26.205582	2025-12-05 18:50:26.205582
+113	272	\N	achei um ambiente da hora	2025-12-05 18:50:26.205582	2025-12-05 18:50:26.205582
+114	252	8	\N	2025-12-05 18:50:37.273596	2025-12-05 18:50:37.273596
+115	253	9	\N	2025-12-05 18:50:37.273596	2025-12-05 18:50:37.273596
+116	254	8	\N	2025-12-05 18:50:37.273596	2025-12-05 18:50:37.273596
+117	255	9	\N	2025-12-05 18:50:37.273596	2025-12-05 18:50:37.273596
+118	274	\N	Gostei do local	2025-12-05 18:50:37.273596	2025-12-05 18:50:37.273596
+119	262	7	\N	2025-12-05 18:51:21.499466	2025-12-05 18:51:21.499466
+120	263	8	\N	2025-12-05 18:51:21.499466	2025-12-05 18:51:21.499466
+121	264	9	\N	2025-12-05 18:51:21.499466	2025-12-05 18:51:21.499466
+122	265	8	\N	2025-12-05 18:51:21.499466	2025-12-05 18:51:21.499466
+123	276	\N	poderia ter outras marcas também	2025-12-05 18:51:21.499466	2025-12-05 18:51:21.499466
+124	257	8	\N	2025-12-05 18:51:41.634574	2025-12-05 18:51:41.634574
+125	258	9	\N	2025-12-05 18:51:41.634574	2025-12-05 18:51:41.634574
+126	259	8	\N	2025-12-05 18:51:41.634574	2025-12-05 18:51:41.634574
+127	260	9	\N	2025-12-05 18:51:41.634574	2025-12-05 18:51:41.634574
+128	275	\N	Gostei das opções	2025-12-05 18:51:41.634574	2025-12-05 18:51:41.634574
+129	252	8	\N	2025-12-05 18:52:09.562422	2025-12-05 18:52:09.562422
+130	253	7	\N	2025-12-05 18:52:09.562422	2025-12-05 18:52:09.562422
+131	254	7	\N	2025-12-05 18:52:09.562422	2025-12-05 18:52:09.562422
+132	255	9	\N	2025-12-05 18:52:09.562422	2025-12-05 18:52:09.562422
+133	274	\N	Faltou camisetas de clubes estrangeiros. Pouca variedade	2025-12-05 18:52:09.562422	2025-12-05 18:52:09.562422
+134	242	7	\N	2025-12-05 18:52:28.81026	2025-12-05 18:52:28.81026
+135	243	8	\N	2025-12-05 18:52:28.81026	2025-12-05 18:52:28.81026
+136	244	7	\N	2025-12-05 18:52:28.81026	2025-12-05 18:52:28.81026
+137	245	7	\N	2025-12-05 18:52:28.81026	2025-12-05 18:52:28.81026
+138	272	\N	Achei um espaço apertado	2025-12-05 18:52:28.81026	2025-12-05 18:52:28.81026
+139	257	8	\N	2025-12-05 18:52:46.468182	2025-12-05 18:52:46.468182
+140	258	9	\N	2025-12-05 18:52:46.468182	2025-12-05 18:52:46.468182
+141	259	10	\N	2025-12-05 18:52:46.468182	2025-12-05 18:52:46.468182
+142	260	9	\N	2025-12-05 18:52:46.468182	2025-12-05 18:52:46.468182
+143	275	\N	Gostei da loja e do atendimento	2025-12-05 18:52:46.468182	2025-12-05 18:52:46.468182
+144	252	8	\N	2025-12-05 18:53:12.885726	2025-12-05 18:53:12.885726
+145	253	9	\N	2025-12-05 18:53:12.885726	2025-12-05 18:53:12.885726
+146	254	9	\N	2025-12-05 18:53:12.885726	2025-12-05 18:53:12.885726
+147	255	9	\N	2025-12-05 18:53:12.885726	2025-12-05 18:53:12.885726
+148	274	\N	achei satisfatório o ambiente	2025-12-05 18:53:12.885726	2025-12-05 18:53:12.885726
+149	257	8	\N	2025-12-05 18:53:41.59357	2025-12-05 18:53:41.59357
+150	258	9	\N	2025-12-05 18:53:41.59357	2025-12-05 18:53:41.59357
+151	259	10	\N	2025-12-05 18:53:41.59357	2025-12-05 18:53:41.59357
+152	260	9	\N	2025-12-05 18:53:41.59357	2025-12-05 18:53:41.59357
+153	275	\N	Pderia ter mais opção de cores nos tênis da adidas 	2025-12-05 18:53:41.59357	2025-12-05 18:53:41.59357
+154	257	8	\N	2025-12-05 18:56:20.089205	2025-12-05 18:56:20.089205
+155	258	9	\N	2025-12-05 18:56:20.089205	2025-12-05 18:56:20.089205
+156	259	9	\N	2025-12-05 18:56:20.089205	2025-12-05 18:56:20.089205
+157	260	8	\N	2025-12-05 18:56:20.089205	2025-12-05 18:56:20.089205
+158	275	\N	Roupas e acessórios de qualidade. gostei.	2025-12-05 18:56:20.089205	2025-12-05 18:56:20.089205
+159	247	8	\N	2025-12-05 18:56:45.878888	2025-12-05 18:56:45.878888
+160	248	8	\N	2025-12-05 18:56:45.878888	2025-12-05 18:56:45.878888
+161	249	8	\N	2025-12-05 18:56:45.878888	2025-12-05 18:56:45.878888
+162	250	7	\N	2025-12-05 18:56:45.878888	2025-12-05 18:56:45.878888
+163	273	\N	poderia ter um espaço maior.	2025-12-05 18:56:45.878888	2025-12-05 18:56:45.878888
+164	262	8	\N	2025-12-05 18:57:25.321892	2025-12-05 18:57:25.321892
+165	263	7	\N	2025-12-05 18:57:25.321892	2025-12-05 18:57:25.321892
+166	264	7	\N	2025-12-05 18:57:25.321892	2025-12-05 18:57:25.321892
+167	265	7	\N	2025-12-05 18:57:25.321892	2025-12-05 18:57:25.321892
+168	276	\N	bom.	2025-12-05 18:57:25.321892	2025-12-05 18:57:25.321892
+169	247	8	\N	2025-12-05 20:30:15.213354	2025-12-05 20:30:15.213354
+170	248	8	\N	2025-12-05 20:30:15.213354	2025-12-05 20:30:15.213354
+171	249	8	\N	2025-12-05 20:30:15.213354	2025-12-05 20:30:15.213354
+172	250	8	\N	2025-12-05 20:30:15.213354	2025-12-05 20:30:15.213354
+173	273	\N	bom	2025-12-05 20:30:15.213354	2025-12-05 20:30:15.213354
+174	252	8	\N	2025-12-05 20:42:00.904479	2025-12-05 20:42:00.904479
+175	253	7	\N	2025-12-05 20:42:00.904479	2025-12-05 20:42:00.904479
+176	254	8	\N	2025-12-05 20:42:00.904479	2025-12-05 20:42:00.904479
+177	255	8	\N	2025-12-05 20:42:00.904479	2025-12-05 20:42:00.904479
+178	274	\N	bom	2025-12-05 20:42:00.904479	2025-12-05 20:42:00.904479
+179	252	8	\N	2025-12-05 22:49:27.573751	2025-12-05 22:49:27.573751
+180	253	8	\N	2025-12-05 22:49:27.573751	2025-12-05 22:49:27.573751
+181	254	7	\N	2025-12-05 22:49:27.573751	2025-12-05 22:49:27.573751
+182	255	8	\N	2025-12-05 22:49:27.573751	2025-12-05 22:49:27.573751
+183	274	\N	gostei do local	2025-12-05 22:49:27.573751	2025-12-05 22:49:27.573751
+184	252	8	\N	2025-12-05 22:59:10.350563	2025-12-05 22:59:10.350563
+185	253	9	\N	2025-12-05 22:59:10.350563	2025-12-05 22:59:10.350563
+186	254	9	\N	2025-12-05 22:59:10.350563	2025-12-05 22:59:10.350563
+187	255	8	\N	2025-12-05 22:59:10.350563	2025-12-05 22:59:10.350563
+188	274	\N	achei um bom lugar	2025-12-05 22:59:10.350563	2025-12-05 22:59:10.350563
+189	262	7	\N	2025-12-05 23:03:14.202354	2025-12-05 23:03:14.202354
+190	263	6	\N	2025-12-05 23:03:14.202354	2025-12-05 23:03:14.202354
+191	264	7	\N	2025-12-05 23:03:14.202354	2025-12-05 23:03:14.202354
+192	265	8	\N	2025-12-05 23:03:14.202354	2025-12-05 23:03:14.202354
+193	276	\N	bom.	2025-12-05 23:03:14.202354	2025-12-05 23:03:14.202354
+194	252	8	\N	2025-12-05 23:05:38.255644	2025-12-05 23:05:38.255644
+195	253	7	\N	2025-12-05 23:05:38.255644	2025-12-05 23:05:38.255644
+196	254	8	\N	2025-12-05 23:05:38.255644	2025-12-05 23:05:38.255644
+197	255	7	\N	2025-12-05 23:05:38.255644	2025-12-05 23:05:38.255644
+198	274	\N	poderia ter um preço melhor	2025-12-05 23:05:38.255644	2025-12-05 23:05:38.255644
+199	262	7	\N	2025-12-05 23:07:38.242784	2025-12-05 23:07:38.242784
+200	263	8	\N	2025-12-05 23:07:38.242784	2025-12-05 23:07:38.242784
+201	264	7	\N	2025-12-05 23:07:38.242784	2025-12-05 23:07:38.242784
+202	265	6	\N	2025-12-05 23:07:38.242784	2025-12-05 23:07:38.242784
+203	276	\N	bom	2025-12-05 23:07:38.242784	2025-12-05 23:07:38.242784
+204	252	8	\N	2025-12-05 23:09:05.235095	2025-12-05 23:09:05.235095
+205	253	9	\N	2025-12-05 23:09:05.235095	2025-12-05 23:09:05.235095
+206	254	8	\N	2025-12-05 23:09:05.235095	2025-12-05 23:09:05.235095
+207	255	8	\N	2025-12-05 23:09:05.235095	2025-12-05 23:09:05.235095
+208	274	\N	bom	2025-12-05 23:09:05.235095	2025-12-05 23:09:05.235095
+209	252	8	\N	2025-12-05 23:11:00.616474	2025-12-05 23:11:00.616474
+210	253	9	\N	2025-12-05 23:11:00.616474	2025-12-05 23:11:00.616474
+211	254	9	\N	2025-12-05 23:11:00.616474	2025-12-05 23:11:00.616474
+212	255	9	\N	2025-12-05 23:11:00.616474	2025-12-05 23:11:00.616474
+213	274	\N	show	2025-12-05 23:11:00.616474	2025-12-05 23:11:00.616474
+214	257	9	\N	2025-12-05 23:11:55.981604	2025-12-05 23:11:55.981604
+215	258	9	\N	2025-12-05 23:11:55.981604	2025-12-05 23:11:55.981604
+216	259	9	\N	2025-12-05 23:11:55.981604	2025-12-05 23:11:55.981604
+217	260	8	\N	2025-12-05 23:11:55.981604	2025-12-05 23:11:55.981604
+218	275	\N	bom	2025-12-05 23:11:55.981604	2025-12-05 23:11:55.981604
+219	247	7	\N	2025-12-05 23:13:49.707539	2025-12-05 23:13:49.707539
+220	248	8	\N	2025-12-05 23:13:49.707539	2025-12-05 23:13:49.707539
+221	249	7	\N	2025-12-05 23:13:49.707539	2025-12-05 23:13:49.707539
+222	250	7	\N	2025-12-05 23:13:49.707539	2025-12-05 23:13:49.707539
+223	273	\N	bom	2025-12-05 23:13:49.707539	2025-12-05 23:13:49.707539
+224	247	7	\N	2025-12-05 23:16:37.781532	2025-12-05 23:16:37.781532
+225	248	6	\N	2025-12-05 23:16:37.781532	2025-12-05 23:16:37.781532
+226	249	7	\N	2025-12-05 23:16:37.781532	2025-12-05 23:16:37.781532
+227	250	6	\N	2025-12-05 23:16:37.781532	2025-12-05 23:16:37.781532
+228	273	\N	maior espaço	2025-12-05 23:16:37.781532	2025-12-05 23:16:37.781532
+229	252	8	\N	2025-12-05 23:18:13.488527	2025-12-05 23:18:13.488527
+230	253	8	\N	2025-12-05 23:18:13.488527	2025-12-05 23:18:13.488527
+231	254	8	\N	2025-12-05 23:18:13.488527	2025-12-05 23:18:13.488527
+232	255	7	\N	2025-12-05 23:18:13.488527	2025-12-05 23:18:13.488527
+233	274	\N	muito bom	2025-12-05 23:18:13.488527	2025-12-05 23:18:13.488527
+234	252	8	\N	2025-12-05 23:19:41.187576	2025-12-05 23:19:41.187576
+235	253	7	\N	2025-12-05 23:19:41.187576	2025-12-05 23:19:41.187576
+236	254	8	\N	2025-12-05 23:19:41.187576	2025-12-05 23:19:41.187576
+237	255	9	\N	2025-12-05 23:19:41.187576	2025-12-05 23:19:41.187576
+238	274	\N	muito bom	2025-12-05 23:19:41.187576	2025-12-05 23:19:41.187576
+239	252	8	\N	2025-12-05 23:20:05.753561	2025-12-05 23:20:05.753561
+240	253	7	\N	2025-12-05 23:20:05.753561	2025-12-05 23:20:05.753561
+241	254	8	\N	2025-12-05 23:20:05.753561	2025-12-05 23:20:05.753561
+242	255	9	\N	2025-12-05 23:20:05.753561	2025-12-05 23:20:05.753561
+243	274	\N	gostei do local	2025-12-05 23:20:05.753561	2025-12-05 23:20:05.753561
+244	252	8	\N	2025-12-05 23:21:48.901181	2025-12-05 23:21:48.901181
+245	253	9	\N	2025-12-05 23:21:48.901181	2025-12-05 23:21:48.901181
+246	254	8	\N	2025-12-05 23:21:48.901181	2025-12-05 23:21:48.901181
+247	255	7	\N	2025-12-05 23:21:48.901181	2025-12-05 23:21:48.901181
+248	274	\N	achei um local bem estruturado	2025-12-05 23:21:48.901181	2025-12-05 23:21:48.901181
+249	252	8	\N	2025-12-05 23:23:06.026296	2025-12-05 23:23:06.026296
+250	253	9	\N	2025-12-05 23:23:06.026296	2025-12-05 23:23:06.026296
+251	254	9	\N	2025-12-05 23:23:06.026296	2025-12-05 23:23:06.026296
+252	255	7	\N	2025-12-05 23:23:06.026296	2025-12-05 23:23:06.026296
+253	274	\N	local bom	2025-12-05 23:23:06.026296	2025-12-05 23:23:06.026296
+254	257	8	\N	2025-12-05 23:24:10.108168	2025-12-05 23:24:10.108168
+255	258	9	\N	2025-12-05 23:24:10.108168	2025-12-05 23:24:10.108168
+256	259	9	\N	2025-12-05 23:24:10.108168	2025-12-05 23:24:10.108168
+257	260	8	\N	2025-12-05 23:24:10.108168	2025-12-05 23:24:10.108168
+258	275	\N	local bem interessante	2025-12-05 23:24:10.108168	2025-12-05 23:24:10.108168
+259	252	8	\N	2025-12-05 23:26:22.127189	2025-12-05 23:26:22.127189
+260	253	8	\N	2025-12-05 23:26:22.127189	2025-12-05 23:26:22.127189
+261	254	7	\N	2025-12-05 23:26:22.127189	2025-12-05 23:26:22.127189
+262	255	7	\N	2025-12-05 23:26:22.127189	2025-12-05 23:26:22.127189
+263	274	\N	local bom	2025-12-05 23:26:22.127189	2025-12-05 23:26:22.127189
+264	257	9	\N	2025-12-05 23:28:34.514001	2025-12-05 23:28:34.514001
+265	258	8	\N	2025-12-05 23:28:34.514001	2025-12-05 23:28:34.514001
+266	259	8	\N	2025-12-05 23:28:34.514001	2025-12-05 23:28:34.514001
+267	260	8	\N	2025-12-05 23:28:34.514001	2025-12-05 23:28:34.514001
+268	275	\N	show de bola	2025-12-05 23:28:34.514001	2025-12-05 23:28:34.514001
+269	257	8	\N	2025-12-05 23:30:25.460028	2025-12-05 23:30:25.460028
+270	258	8	\N	2025-12-05 23:30:25.460028	2025-12-05 23:30:25.460028
+271	259	8	\N	2025-12-05 23:30:25.460028	2025-12-05 23:30:25.460028
+272	260	8	\N	2025-12-05 23:30:25.460028	2025-12-05 23:30:25.460028
+273	275	\N	bom	2025-12-05 23:30:25.460028	2025-12-05 23:30:25.460028
+274	262	7	\N	2025-12-05 23:31:26.684592	2025-12-05 23:31:26.684592
+275	263	7	\N	2025-12-05 23:31:26.684592	2025-12-05 23:31:26.684592
+276	264	7	\N	2025-12-05 23:31:26.684592	2025-12-05 23:31:26.684592
+277	265	7	\N	2025-12-05 23:31:26.684592	2025-12-05 23:31:26.684592
+278	276	\N	bom	2025-12-05 23:31:26.684592	2025-12-05 23:31:26.684592
+279	257	9	\N	2025-12-05 23:32:44.253595	2025-12-05 23:32:44.253595
+280	258	9	\N	2025-12-05 23:32:44.253595	2025-12-05 23:32:44.253595
+281	259	9	\N	2025-12-05 23:32:44.253595	2025-12-05 23:32:44.253595
+282	260	9	\N	2025-12-05 23:32:44.253595	2025-12-05 23:32:44.253595
+283	275	\N	bom	2025-12-05 23:32:44.253595	2025-12-05 23:32:44.253595
+284	242	7	\N	2025-12-05 23:34:06.947679	2025-12-05 23:34:06.947679
+285	243	6	\N	2025-12-05 23:34:06.947679	2025-12-05 23:34:06.947679
+286	244	7	\N	2025-12-05 23:34:06.947679	2025-12-05 23:34:06.947679
+287	245	7	\N	2025-12-05 23:34:06.947679	2025-12-05 23:34:06.947679
+288	272	\N	bom	2025-12-05 23:34:06.947679	2025-12-05 23:34:06.947679
+289	257	9	\N	2025-12-05 23:35:42.142664	2025-12-05 23:35:42.142664
+290	258	9	\N	2025-12-05 23:35:42.142664	2025-12-05 23:35:42.142664
+291	259	8	\N	2025-12-05 23:35:42.142664	2025-12-05 23:35:42.142664
+292	260	8	\N	2025-12-05 23:35:42.142664	2025-12-05 23:35:42.142664
+293	275	\N	bom	2025-12-05 23:35:42.142664	2025-12-05 23:35:42.142664
+294	252	7	\N	2025-12-05 23:36:30.5361	2025-12-05 23:36:30.5361
+295	253	7	\N	2025-12-05 23:36:30.5361	2025-12-05 23:36:30.5361
+296	254	8	\N	2025-12-05 23:36:30.5361	2025-12-05 23:36:30.5361
+297	255	7	\N	2025-12-05 23:36:30.5361	2025-12-05 23:36:30.5361
+298	274	\N	bom	2025-12-05 23:36:30.5361	2025-12-05 23:36:30.5361
+299	257	9	\N	2025-12-05 23:37:16.054678	2025-12-05 23:37:16.054678
+300	258	9	\N	2025-12-05 23:37:16.054678	2025-12-05 23:37:16.054678
+301	259	10	\N	2025-12-05 23:37:16.054678	2025-12-05 23:37:16.054678
+302	260	8	\N	2025-12-05 23:37:16.054678	2025-12-05 23:37:16.054678
+303	275	\N	bom	2025-12-05 23:37:16.054678	2025-12-05 23:37:16.054678
+304	252	8	\N	2025-12-05 23:38:29.084255	2025-12-05 23:38:29.084255
+305	253	7	\N	2025-12-05 23:38:29.084255	2025-12-05 23:38:29.084255
+306	254	9	\N	2025-12-05 23:38:29.084255	2025-12-05 23:38:29.084255
+307	255	7	\N	2025-12-05 23:38:29.084255	2025-12-05 23:38:29.084255
+308	274	\N	bom	2025-12-05 23:38:29.084255	2025-12-05 23:38:29.084255
+309	257	9	\N	2025-12-05 23:41:11.051839	2025-12-05 23:41:11.051839
+310	258	9	\N	2025-12-05 23:41:11.051839	2025-12-05 23:41:11.051839
+311	259	9	\N	2025-12-05 23:41:11.051839	2025-12-05 23:41:11.051839
+312	260	8	\N	2025-12-05 23:41:11.051839	2025-12-05 23:41:11.051839
+313	275	\N	bom	2025-12-05 23:41:11.051839	2025-12-05 23:41:11.051839
+314	252	8	\N	2025-12-05 23:42:38.664354	2025-12-05 23:42:38.664354
+315	253	8	\N	2025-12-05 23:42:38.664354	2025-12-05 23:42:38.664354
+316	254	7	\N	2025-12-05 23:42:38.664354	2025-12-05 23:42:38.664354
+317	255	8	\N	2025-12-05 23:42:38.664354	2025-12-05 23:42:38.664354
+318	274	\N	bom	2025-12-05 23:42:38.664354	2025-12-05 23:42:38.664354
+319	252	8	\N	2025-12-05 23:43:36.122247	2025-12-05 23:43:36.122247
+320	253	8	\N	2025-12-05 23:43:36.122247	2025-12-05 23:43:36.122247
+321	254	8	\N	2025-12-05 23:43:36.122247	2025-12-05 23:43:36.122247
+322	255	8	\N	2025-12-05 23:43:36.122247	2025-12-05 23:43:36.122247
+323	274	\N	bom	2025-12-05 23:43:36.122247	2025-12-05 23:43:36.122247
+324	252	8	\N	2025-12-05 23:47:30.267721	2025-12-05 23:47:30.267721
+325	253	8	\N	2025-12-05 23:47:30.267721	2025-12-05 23:47:30.267721
+326	254	8	\N	2025-12-05 23:47:30.267721	2025-12-05 23:47:30.267721
+327	255	7	\N	2025-12-05 23:47:30.267721	2025-12-05 23:47:30.267721
+328	274	\N	bom	2025-12-05 23:47:30.267721	2025-12-05 23:47:30.267721
+329	252	7	\N	2025-12-05 23:48:42.776259	2025-12-05 23:48:42.776259
+330	253	7	\N	2025-12-05 23:48:42.776259	2025-12-05 23:48:42.776259
+331	254	8	\N	2025-12-05 23:48:42.776259	2025-12-05 23:48:42.776259
+332	255	7	\N	2025-12-05 23:48:42.776259	2025-12-05 23:48:42.776259
+333	274	\N	bom	2025-12-05 23:48:42.776259	2025-12-05 23:48:42.776259
+334	252	8	\N	2025-12-05 23:48:53.711553	2025-12-05 23:48:53.711553
+335	253	9	\N	2025-12-05 23:48:53.711553	2025-12-05 23:48:53.711553
+336	254	7	\N	2025-12-05 23:48:53.711553	2025-12-05 23:48:53.711553
+337	255	8	\N	2025-12-05 23:48:53.711553	2025-12-05 23:48:53.711553
+338	274	\N	bom	2025-12-05 23:48:53.711553	2025-12-05 23:48:53.711553
+339	262	6	\N	2025-12-05 23:54:31.020947	2025-12-05 23:54:31.020947
+340	263	7	\N	2025-12-05 23:54:31.020947	2025-12-05 23:54:31.020947
+341	264	8	\N	2025-12-05 23:54:31.020947	2025-12-05 23:54:31.020947
+342	265	8	\N	2025-12-05 23:54:31.020947	2025-12-05 23:54:31.020947
+343	276	\N	bom	2025-12-05 23:54:31.020947	2025-12-05 23:54:31.020947
+344	252	7	\N	2025-12-05 23:55:24.458517	2025-12-05 23:55:24.458517
+345	253	7	\N	2025-12-05 23:55:24.458517	2025-12-05 23:55:24.458517
+346	254	7	\N	2025-12-05 23:55:24.458517	2025-12-05 23:55:24.458517
+347	255	7	\N	2025-12-05 23:55:24.458517	2025-12-05 23:55:24.458517
+348	274	\N	bom	2025-12-05 23:55:24.458517	2025-12-05 23:55:24.458517
+349	252	7	\N	2025-12-06 00:01:50.971867	2025-12-06 00:01:50.971867
+350	253	8	\N	2025-12-06 00:01:50.971867	2025-12-06 00:01:50.971867
+351	254	7	\N	2025-12-06 00:01:50.971867	2025-12-06 00:01:50.971867
+352	255	8	\N	2025-12-06 00:01:50.971867	2025-12-06 00:01:50.971867
+353	274	\N	bom	2025-12-06 00:01:50.971867	2025-12-06 00:01:50.971867
+354	242	6	\N	2025-12-06 00:02:11.321182	2025-12-06 00:02:11.321182
+355	243	7	\N	2025-12-06 00:02:11.321182	2025-12-06 00:02:11.321182
+356	244	8	\N	2025-12-06 00:02:11.321182	2025-12-06 00:02:11.321182
+357	245	7	\N	2025-12-06 00:02:11.321182	2025-12-06 00:02:11.321182
+358	272	\N	bom	2025-12-06 00:02:11.321182	2025-12-06 00:02:11.321182
+\.
+
+
+--
+-- TOC entry 4939 (class 0 OID 57860)
+-- Dependencies: 221
+-- Data for Name: departamentos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.departamentos (id, nome) FROM stdin;
+1	Luta
+2	Esportes Radicais
+3	Futebol
+4	Corrida
+5	Academia
+\.
+
+
+--
+-- TOC entry 4937 (class 0 OID 57718)
+-- Dependencies: 219
+-- Data for Name: dispositivos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.dispositivos (id, nome, status) FROM stdin;
+1	Padrão	t
+\.
+
+
+--
+-- TOC entry 4941 (class 0 OID 57867)
+-- Dependencies: 223
+-- Data for Name: perguntas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.perguntas (id, id_departamento, texto, status) FROM stdin;
+242	1	Como você avalia a variedade dos produtos de luta em nossa loja?	t
+243	1	Como você avalia a qualidade desses produtos?	t
+244	1	O atendimento desse setor atendeu as suas expectativas?	t
+245	1	Como você avalia os preços dos produtos de luta de nossa loja?	t
+247	2	Como você avalia a variedade dos produtos de esportes radicais?	t
+248	2	Como você avalia a qualidade desses produtos?	t
+249	2	O atendimento desse setor atendeu as suas expectativas?	t
+250	2	Como você avalia os preços desses produtos de esportes de nossa loja?	t
+252	3	Como você avalia a variedade dos produtos relacionados ao futebol?	t
+253	3	Como você avalia a qualidade desses produtos?	t
+254	3	O atendimento desse setor atendeu as suas expectativas?	t
+255	3	Como você avalia os preços dos produtos de futebol de nossa loja?	t
+257	4	Como você avalia a variedade dos produtos de corrida?	t
+258	4	Como você avalia a qualidade dos tênis e roupas de corrida?	t
+259	4	O atendimento desse setor atendeu as suas expectativas?	t
+260	4	Como você avalia os preços dos produtos de corrida de nossa loja?	t
+262	5	Como você avalia a variedade de produtos de academia?	t
+263	5	Como você avalia a qualidade dos produtos de academia?	t
+264	5	O atendimento do setor de academia atendeu suas expectativas?	t
+265	5	Como você avalia os preços dos produtos de academia?	t
+272	1	O que poderia melhorar neste departamento?	t
+273	2	O que poderia melhorar neste departamento?	t
+274	3	O que poderia melhorar neste departamento?	t
+275	4	O que poderia melhorar neste departamento?	t
+276	5	O que poderia melhorar neste departamento?	t
+\.
+
+
+--
+-- TOC entry 4945 (class 0 OID 57898)
+-- Dependencies: 227
+-- Data for Name: usuarios_admin; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.usuarios_admin (id, usuario, senha_hash) FROM stdin;
+1	admin	$2a$06$x.FUdf0PvCRVTu5vuCFca.0lNhL2vvsTaU8wuEVbiLMzkzdmq0Rli
+\.
+
+
+--
+-- TOC entry 4957 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: avaliacoes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.avaliacoes_id_seq', 358, true);
+
+
+--
+-- TOC entry 4958 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: departamentos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.departamentos_id_seq', 21, true);
+
+
+--
+-- TOC entry 4959 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: dispositivos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.dispositivos_id_seq', 1, true);
+
+
+--
+-- TOC entry 4960 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: perguntas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.perguntas_id_seq', 276, true);
+
+
+--
+-- TOC entry 4961 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: usuarios_admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.usuarios_admin_id_seq', 1, true);
+
+
+--
+-- TOC entry 4781 (class 2606 OID 57891)
+-- Name: avaliacoes avaliacoes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.avaliacoes
+    ADD CONSTRAINT avaliacoes_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4777 (class 2606 OID 57865)
+-- Name: departamentos departamentos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.departamentos
+    ADD CONSTRAINT departamentos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4775 (class 2606 OID 57724)
+-- Name: dispositivos dispositivos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.dispositivos
+    ADD CONSTRAINT dispositivos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4779 (class 2606 OID 57875)
+-- Name: perguntas perguntas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.perguntas
+    ADD CONSTRAINT perguntas_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4783 (class 2606 OID 57905)
+-- Name: usuarios_admin usuarios_admin_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.usuarios_admin
+    ADD CONSTRAINT usuarios_admin_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4785 (class 2606 OID 57907)
+-- Name: usuarios_admin usuarios_admin_usuario_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.usuarios_admin
+    ADD CONSTRAINT usuarios_admin_usuario_key UNIQUE (usuario);
+
+
+--
+-- TOC entry 4787 (class 2606 OID 57892)
+-- Name: avaliacoes avaliacoes_id_pergunta_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.avaliacoes
+    ADD CONSTRAINT avaliacoes_id_pergunta_fkey FOREIGN KEY (id_pergunta) REFERENCES public.perguntas(id);
+
+
+--
+-- TOC entry 4786 (class 2606 OID 57876)
+-- Name: perguntas perguntas_id_departamento_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.perguntas
+    ADD CONSTRAINT perguntas_id_departamento_fkey FOREIGN KEY (id_departamento) REFERENCES public.departamentos(id);
+
+
+-- Completed on 2025-12-06 00:57:28
+
+--
+-- PostgreSQL database dump complete
+--
+
